@@ -4,7 +4,20 @@ require_once "functions.php";
 
 $user = isset($_SESSION["user"]) ? $_SESSION["user"] : null;
 
-$connection = mysqli_connect("localhost", "root", "", "adserv");
+if ($_SERVER['SERVER_NAME'] == "https://polar-plains-30456.herokuapp.com/") {
+	$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+	$host = $url["host"];
+	$username = $url["user"];
+	$password = $url["pass"];
+	$dbname = substr($url["path"], 1);
+} else {
+	$host = "localhost";
+	$dbname = "adserv";
+	$username = "root";
+	$password = "";
+}
+
+$connection = mysqli_connect($host, $username, $password, $dbname);
 
 mysqli_set_charset($connection, "utf-8");
 
